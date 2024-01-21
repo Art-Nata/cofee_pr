@@ -15,7 +15,18 @@ class DBCoffee(QWidget):
 
     def open_db(self):
 
-        query = "SELECT * FROM coffee_specifications"
+        query = """SELECT
+                      coffee_specifications.ID
+                      coffee_specifications.name
+                      degree_of_roasting.degree
+                      type_coffee.type_coffee
+                      coffee_specifications.description
+                      coffee_specifications.price
+                      coffee_specifications.packing_volume
+                    FROM coffee_specifications
+                    LEFT JOIN degree_of_roasting ON coffee_specifications.id_degree = degree_of_roasting.id
+                    LEFT JOIN type_coffee ON coffee_specifications.id_type_coffee = type_coffee.id
+                """
         rez = self.con.execute(query).fetchall()
         self.tableWidget.setColumnCount(len(rez[0]))
         self.tableWidget.setRowCount(len(rez))
